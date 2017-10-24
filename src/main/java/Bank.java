@@ -9,8 +9,12 @@
  */
 public class Bank {
 
-    public String bankName;
+    /** the name of the bank. **/
+    private String bankName;
 
+    /**
+     * constructor for the Bank class. Creates a bank object with a name field.
+     */
     public Bank() {
         bankName = "Illini Bank";
     }
@@ -26,9 +30,30 @@ public class Bank {
      * @return boolean
      */
     public boolean withdrawMoney(final BankAccount bankAccount, final double amount) {
-        /*
-         * Implement this function
-         */
+        double balance = bankAccount.getAccountBalance();
+        if (amount > balance) {
+            return false;
+        } else {
+            bankAccount.setAccountBalance(balance - amount);
+            return true;
+        }
+
+    }
+
+    /**
+     * setter for name of bank.
+     * @param name name of the bank
+     */
+    public void setBankName(final String name) {
+        bankName = name;
+    }
+
+    /**
+     * getter for the name of the bank.
+     * @return bankName the name of the bank.
+     */
+    public String getBankName() {
+        return bankName;
     }
 
     /**
@@ -42,9 +67,12 @@ public class Bank {
      * @return boolean
      */
     public boolean depositMoney(final BankAccount bankAccount, final double amount) {
-        /*
-         * Implement this function
-         */
+        if (amount < 0) {
+            return false;
+        }
+        double balance = bankAccount.getAccountBalance();
+        bankAccount.setAccountBalance(balance + amount);
+        return true;
     }
 
     /**
@@ -61,9 +89,9 @@ public class Bank {
 
     public boolean transferMoney(final BankAccount source, final BankAccount destination,
             final double amount) {
-        /*
-         * Implement this function
-         */
+        boolean cond1 = this.withdrawMoney(source, amount);
+        boolean cond2 = this.depositMoney(destination, amount);
+        return cond1 && cond2;
     }
 
     /**
@@ -74,11 +102,10 @@ public class Bank {
      */
 
     public void changeOwnerName(final BankAccount bankAccount, final String name) {
-        /*
-         * Implement this function
-         */
+        bankAccount.setOwnerName(name);
     }
 
+    /** the total number accounts the bank has.**/
     public static int totalAccounts = 0;
     /**
      * Uses static variable to get number of bank accounts opened.
@@ -86,9 +113,7 @@ public class Bank {
      * @return the total number of accounts
      */
     public static int getNumberOfAccount() {
-        /*
-         * Implement this function
-         */
+        return totalAccounts;
     }
 
     /**
@@ -103,10 +128,10 @@ public class Bank {
         System.out.println("We are excited to have you banking with us!\n\n");
 
         // Create Bank Accounts
-        BankAccount account1 = new BankAccount("John Doe", BankAccountType.CHECKINGS);
+        BankAccount account1 = new BankAccount("John Doe", BankAccount.BankAccountType.CHECKINGS);
         System.out.println("Bank account for John Doe created");
 
-        BankAccount account2 = new BankAccount("Jony Ive", BankAccountType.STUDENT);
+        BankAccount account2 = new BankAccount("Jony Ive", BankAccount.BankAccountType.STUDENT);
         System.out.println("Bank account for Johy Ive created\n\n");
 
         // Deposit money to both accounts and print new balance
